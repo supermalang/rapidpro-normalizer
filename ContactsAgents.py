@@ -1,19 +1,12 @@
-#%% 
-## Extraction des données
+
+import os
+import sys
+from pathlib import Path
+from dotenv import load_dotenv
 import http.client
 import mimetypes
 import json
-conn = http.client.HTTPSConnection("api.rapidpro.io")
-payload = ''
-headers = {
-  'Authorization': 'Token 50cbd586af288261b69996ef9aaf0a43fb6351a9'
-}
-conn.request("GET", "/api/v2/contacts.json?flow=bb56ec73-0246-42e1-bc0b-632a6f2a4d81", payload, headers)
-res = conn.getresponse()
-data = res.read()
-
 import requests
-#from dotenv import load_dotenv
 import pandas as pd
 import numpy as np
 import calendar
@@ -21,13 +14,23 @@ from datetime import date
 from datetime import datetime
 import time
 
-#%%
-## Exploitation des données
+
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
+
+
+conn = http.client.HTTPSConnection("api.rapidpro.io")
+payload = ''
+TOKEN = os.getenv("TOKEN")
+
+headers = { 'Authorization': 'Token ' + TOKEN }
+conn.request("GET", "/api/v2/contacts.json?flow=bb56ec73-0246-42e1-bc0b-632a6f2a4d81", payload, headers)
+res = conn.getresponse()
+data = res.read()
+
 data_contacts_agents = json.loads(data)
 data_contacts_agents = data_contacts_agents.get("results")
 
-#%%
-## Transformation des données
 for a in  range(len(data_contacts_agents)):
     #Extraction des valeurs du champs 'groups'
     if not data_contacts_agents[a]['groups']:
@@ -201,129 +204,14 @@ Delai_envoi_rapport_rappel_mensuel = delai_envoi_rapport_rappel(data_contacts_ag
 data_contacts_agents['Delai_envoi_rapport_rappel_mensuel'] = Delai_envoi_rapport_rappel_mensuel
 data_contacts_agents['Delai_envoi_rapport_rappel_mensuel'] = data_contacts_agents['Delai_envoi_rapport_rappel_mensuel'].astype(int, errors= 'ignore')
 
-### Temps moyen de rapportage de l'agent dans l'année
-#moyenne(delai d'envoi de rapports) && annee_en_cours 
-Delai_rapport = pd.DataFrame(columns=['Delai_rapport_Janvier','Delai_rapport_Fevrier','Delai_rapport_Mars','Delai_rapport_Avril','Delai_rapport_Mai','Delai_rapport_Juin','Delai_rapport_Juillet','Delai_rapport_Aout','Delai_rapport_Septembre','Delai_rapport_Octobre','Delai_rapport_Novembre','Delai_rapport_Decembre'], dtype='int')
-
-if maintenant.month == 2 :
-     Delai_rapport['Delai_rapport_Janvier'] = Delai_envoi_rapport_mensuel  
-if maintenant.month == 3 :
-     Delai_rapport['Delai_rapport_Fevrier'] = Delai_envoi_rapport_mensuel
-if maintenant.month == 4 :
-     Delai_rapport['Delai_rapport_Mars'] = Delai_envoi_rapport_mensuel
-if maintenant.month == 5 :
-     Delai_rapport['Delai_rapport_Avril'] = Delai_envoi_rapport_mensuel
-if maintenant.month == 6 :
-     Delai_rapport['Delai_rapport_Mai'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 7 :
-     Delai_rapport['Delai_rapport_Juin'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 8 :
-     Delai_rapport['Delai_rapport_Juillet'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 9 :
-     Delai_rapport['Delai_rapport_Aout'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 10 :
-     Delai_rapport['Delai_rapport_Septembre'] = Delai_envoi_rapport_mensuel
-if maintenant.month == 11 :
-     Delai_rapport['Delai_rapport_Octobre'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 12 :
-     Delai_rapport['Delai_rapport_Novembre'] = Delai_envoi_rapport_mensuel
-if  maintenant.month == 1 :
-     Delai_rapport['Delai_rapport_Decembre'] = Delai_envoi_rapport_mensuel       
-
-Delai_rapport=Delai_rapport.replace(r'', np.NaN)
-
-def time_to_date(tab_delai_mensuel, k):
-    Temps_moyen_rapportage=[]
-    for a in range(len(tab_delai_mensuel)):
-        i=3
-        somme_delai=0
-        while i <= (k-2):
-                somme_delai = somme_delai +tab_delai_mensuel.iloc[a,i] 
-                i= i+1
-        Temps_moyen_rapportage.append(somme_delai / (k - 4)) 
-    return Temps_moyen_rapportage
-
-Temps_moyen_rapportage = time_to_date(Delai_rapport,maintenant.month)
-data_contacts_agents['Temps_moyen_rapportage']= Temps_moyen_rapportage
-
-### Temps moyen d'envoi de rapport de rappels  dans l'annee
-##moyenne(delai d'envoi de rapport de rappel) && annee_en_cours
-Delai_rapport_rappel = pd.DataFrame(columns=['Delai_rapport_rappel_Janvier','Delai_rapport_rappel_Fevrier','Delai_rapport_rappel_Mars','Delai_rapport_rappel_Avril','Delai_rapport_rappel_Mai','Delai_rapport_rappel_Juin','Delai_rapport_rappel_Juillet','Delai_rapport_rappel_Aout','Delai_rapport_rappel_Septembre','Delai_rapport_rappel_Octobre','Delai_rapport_rappel_Novembre','Delai_rapport_rappel_Decembre'], dtype='int')
-
-if maintenant.month == 2 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Janvier'] = Delai_envoi_rapport_rappel_mensuel  
-if maintenant.month == 3 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Fevrier'] = Delai_envoi_rapport_rappel_mensuel
-if maintenant.month == 4 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Mars'] = Delai_envoi_rapport_rappel_mensuel
-if maintenant.month == 5 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Avril'] = Delai_envoi_rapport_rappel_mensuel
-if maintenant.month == 6 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Mai'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 7 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Juin'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 8 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Juillet'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 9 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Aout'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 10 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Septembre'] = Delai_envoi_rapport_rappel_mensuel
-if maintenant.month == 11 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Octobre'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 12 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Novembre'] = Delai_envoi_rapport_rappel_mensuel
-if  maintenant.month == 1 :
-     Delai_rapport_rappel['Delai_rapport_rappel_Decembre'] = Delai_envoi_rapport_rappel_mensuel
-
-Delai_rapport_rappel=Delai_rapport_rappel.replace(r'', np.NaN)
-
-Temps_moyen_rapportage_rappel = time_to_date(Delai_rapport_rappel,maintenant.month)
-data_contacts_agents['Temps_moyen_rapportage_rappel']= Temps_moyen_rapportage_rappel
 
 ### Nombre de rapport délivré par chaque agent
 #### somme des rapports + somme des rapports de rappel 
-Nombre_rapport =pd.DataFrame(columns=['Nombre_rapport_Janvier', 'Nombre_rapport_Fevrier', 'Nombre_rapport_Mars', 'Nombre_rapport_Avril', 'Nombre_rapport_Mai', 'Nombre_rapport_Juin', 'Nombre_rapport_Juillet','Nombre_rapport_Aout','Nombre_rapport_Septembre', 'Nombre_rapport_Octobre', 'Nombre_rapport_Novembre', 'Nombre_rapport_Decembre'], dtype='int')
-somme_rapport_mensuel= data_contacts_agents['Nombre_rapport_mensuel'] + data_contacts_agents['Nombre_rapport_de_rappel_mensuel']
-
-if maintenant.month == 2 :
-     Nombre_rapport['Nombre_rapport_Janvier'] = somme_rapport_mensuel
-if maintenant.month == 3 :
-     Nombre_rapport['Nombre_rapport_Fevrier'] = somme_rapport_mensuel
-if maintenant.month == 4 :
-     Nombre_rapport['Nombre_rapport_Mars'] = somme_rapport_mensuel
-if maintenant.month == 5 :
-     Nombre_rapport['Nombre_rapport_Avril'] = somme_rapport_mensuel
-if maintenant.month == 6 :
-       Nombre_rapport['Nombre_rapport_Mai'] = somme_rapport_mensuel
-if  maintenant.month == 7 :
-      Nombre_rapport['Nombre_rapport_Juin'] = somme_rapport_mensuel
-if  maintenant.month == 8 :
-      Nombre_rapport['Nombre_rapport_Juillet'] = somme_rapport_mensuel
-if  maintenant.month == 9 :
-      Nombre_rapport['Nombre_rapport_Aout'] = somme_rapport_mensuel
-if  maintenant.month == 10 :
-      Nombre_rapport['Nombre_rapport_Septembre'] = somme_rapport_mensuel
-if maintenant.month == 11 :
-     Nombre_rapport['Nombre_rapport_Octobre'] = somme_rapport_mensuel
-if  maintenant.month == 12 :
-      Nombre_rapport['Nombre_rapport_Novembre'] = somme_rapport_mensuel
-if  maintenant.month == 1 :
-      Nombre_rapport['Nombre_rapport_Decembre'] = somme_rapport_mensuel
-
-### 
-def nombre_rapports_delivres(tab_rapport_mensuel, k):
-    Nombre_rapports_delivres=[]
-    for a in range(len(tab_rapport_mensuel)):
-        i=3
-        total_rapport=0
-        while i <= (k-2):
-                total_rapport = total_rapport + tab_rapport_mensuel.iloc[a,i] 
-                i= i+1
-        Nombre_rapports_delivres.append(total_rapport) 
-    return Nombre_rapports_delivres
-
-Nombre_rapports_delivres= nombre_rapports_delivres(Nombre_rapport, maintenant.month)
+Nombre_rapports_delivres= data_contacts_agents['Nombre_rapport_mensuel'] + data_contacts_agents['Nombre_rapport_de_rappel_mensuel']
 data_contacts_agents['Nombre_rapports_delivres']= Nombre_rapports_delivres
+data_contacts_agents['Nombre_rapports_delivres']=data_contacts_agents['Nombre_rapports_delivres'].astype(int)
+
+######## Quelques corrections sur les colonnes du dataframe 
 
 ######## Quelques corrections sur les colonnes du dataframe 
 
@@ -340,5 +228,25 @@ data_contacts_agents['urns']=data_contacts_agents['urns'].astype(str)
 ### Enlever le mot "REGION: " de Region 
 data_contacts_agents['Region'] = data_contacts_agents['Region'].str[8:]
 
-filename= 'data_contacts_agents.csv'
-data_contacts_agents.to_csv(filename, index=False, header=True, encoding='iso-8859-1')
+data_contacts_agents_rapport= data_contacts_agents[['uuid', 'name', 'urns', 'created_on', 'Region', 'Departement',
+       'Commune', 'compteur_retard_rapport_agent_ec',
+       'rappels_de_rapport', 'date_rapport', 'mois_de_rapport',
+       'mois_dernier_rapport', 'annee_en_cours', 'mois_de_rappel',
+       'Type_rapportage_mensuel', 'Nombre_rapport_mensuel', 'Delai_envoi_rapport_mensuel','Nombre_rapports_delivres']]
+
+data_contacts_agents_rappel= data_contacts_agents[['uuid', 'name', 'urns', 'created_on', 'Region', 'Departement',
+       'Commune', 'compteur_retard_rapport_agent_ec', 'date_rapport_de_rappel',
+       'rappels_de_rapport', 'mois_de_rapport',
+       'mois_dernier_rapport', 'annee_en_cours', 'mois_de_rappel',
+       'Type_rapportage_mensuel', 'Nombre_rapport_de_rappel_mensuel',
+       'Delai_envoi_rapport_rappel_mensuel', 'Nombre_rapports_delivres']]
+
+#Ajout de l'horodatage aux noms de fichiers à exporter : DateExportFichier et Heure
+suffixe=  maintenant.strftime('%Y-%m-%d') + '_' + maintenant.strftime('%H-%M-%S') 
+filename_rapport= 'data_contacts_agents_rapport_' + suffixe + '.csv'
+filename_rappel= 'data_contacts_agents_rappel_' + suffixe + '.csv'
+
+#Exportation des fichiers en csv
+data_contacts_agents_rapport.to_csv(filename_rapport, index=False, header=True, encoding='iso-8859-1')
+data_contacts_agents_rappel.to_csv(filename_rappel, index=False, header=True, encoding='iso-8859-1')
+
