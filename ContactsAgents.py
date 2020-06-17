@@ -178,9 +178,14 @@ def delai_envoi_rapport(x,y):
         if data_contacts_agents['annee_en_cours'][a]== 0 :
             Delai_envoi_rapport.append('')
         else :
-            first_delai = date(data_contacts_agents['annee_en_cours'][a], Mois_en_nombre(y)[a] + 1, 1)
-            k = (x.dt.date[a] - first_delai).days 
-            Delai_envoi_rapport.append(k)
+            if Mois_en_nombre(y)[a] != 12 :
+                first_delai = date(data_contacts_agents['annee_en_cours'][a], Mois_en_nombre(y)[a] + 1, 10)
+                k = (x.dt.date[a] - first_delai).days 
+            else :
+                first_delai = date(data_contacts_agents['annee_en_cours'][a], 1, 10)
+                k = (x.dt.date[a] - first_delai).days 
+            Delai_envoi_rapport.append(k)    
+            
     return Delai_envoi_rapport
 
 Delai_envoi_rapport_mensuel = delai_envoi_rapport(data_contacts_agents['date_rapport'],data_contacts_agents['mois_de_rapport'])
@@ -195,8 +200,12 @@ def delai_envoi_rapport_rappel(x,y):
         if data_contacts_agents['annee_en_cours'][a]== 0 or date_rapport_de_rappel_year[a] != data_contacts_agents['annee_en_cours'][a]:
             Delai_envoi_rapport_rappel.append('')
         else :
-            first_delai = date(data_contacts_agents['annee_en_cours'][a], Mois_en_nombre(y)[a] + 1, 10)
-            k = (x.dt.date[a] - first_delai).days 
+            if Mois_en_nombre(y)[a] != 12 :
+                first_delai = date(data_contacts_agents['annee_en_cours'][a], Mois_en_nombre(y)[a] + 1, 10)
+                k = (x.dt.date[a] - first_delai).days 
+            else :
+                first_delai = date(data_contacts_agents['annee_en_cours'][a], 1, 10)
+                k = (x.dt.date[a] - first_delai).days 
             Delai_envoi_rapport_rappel.append(k)
     return Delai_envoi_rapport_rappel
 
