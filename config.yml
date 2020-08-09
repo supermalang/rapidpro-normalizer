@@ -24,19 +24,6 @@ contact_fields:
     - modified_on
     - uuid
     - fields:
-        - departement
-        - commune
-        - annee_en_cours
-        - mois_dernier_rapport
-        - mois_de_rapport
-        - reporting_month  
-        - date_rapport
-        - date_completude_du_rapport
-        - compteur_retard_rapport_agent_ec
-        - mois_de_rappel
-        - rappels_de_rapport
-<<<<<<< HEAD
-        - date_rapport_de_rappel
-=======
-        - date_rapport_de_rappel
->>>>>>> c419a173610b0e02a95da9262ec0419973c84474
+        - field1
+        - field2
+        - field3
