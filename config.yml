@@ -35,4 +35,8 @@ contact_fields:
         - compteur_retard_rapport_agent_ec
         - mois_de_rappel
         - rappels_de_rapport
+<<<<<<< HEAD
         - date_rapport_de_rappel
+=======
+        - date_rapport_de_rappel
+>>>>>>> c419a173610b0e02a95da9262ec0419973c84474
