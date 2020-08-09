@@ -13,7 +13,7 @@ RapidPro Normalizer is a command line utility to flatten RapidPro API Responses 
 - Interactive command line interface
 - Easy Yaml configuration
 - Export dataset to file and database
-- Works on Mac, Linux and (maybe) Windows
+- Works on Linux and (maybe) Windows
 
 # Installation
 ## The easy way
@@ -96,3 +96,28 @@ You have the following options:
 ```bash
 $ python src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
 ```
+
+# Schedule automatic execution
+> *This part is optional*  
+
+You can schedule automatic execution of the utility by creating a cron task. Follow these steps,
+
+1. Display and copy the command to be executed by the cron task  
+⚠️ *Make sure you are still in the rapidpro-normalization directory*
+```bash
+$ echo "python $(pwd)/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts"
+python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
+$
+```
+2. Edit the `crontab` file
+> *The `crontab` file contains instructions for the cron daemon in the following simplified manner: "**run this command at this time on this date**".*
+
+```bash
+$ crontab -e
+```
+
+Add at the end of the file the command you have copied from the previous step in this way and save and close the file:
+```
+0 1 * * * python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
+```
+This gives instruction to the cron daemon to run the `python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts` command every day of week, every month, every day of month at 1:00 AM. 
