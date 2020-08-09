@@ -1,5 +1,5 @@
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)  
-[![GitHub license](https://img.shields.io/github/license/supermalang/rapidpro-normalizer)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/supermalang/rapidpro-normalizer)](https://github.com/supermalang/rapidpro-normalizer/LICENSE)
 [![GitHub tag](https://img.shields.io/github/tag/supermalang/rapidpro-normalizer)](https://GitHub.com/supermalang/PBI_ImproveReportAppeal/tags/)
 
 
