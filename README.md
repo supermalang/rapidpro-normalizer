@@ -47,11 +47,11 @@ Open the `config.yml` file and update the content.
 1. Define the file export settings. The `path` must in the directory of the utility
 2. Enable or disable the export to database
 3. Give the field group to use to fetch columns that need to be exported. Here `Contact_fields` is the field group, but you can customize. Make sure it does not contain spaces, numbers or special characters. The field group will be refered in the command line as `fieldgroup`.  
-The RapidPro field hierarchy from the API Response shoulb be conserved. Top level fields are `name, urns, blocked, created_on, modified_on, uuid, fields`. Sub fields are under `fields`. Sub fields can change depending on your RapidPro instance.
+4. Give your fields. The RapidPro field hierarchy from the API Response must be conserved. Top level fields are `name, urns, blocked, created_on, modified_on, uuid, fields`. Sub fields are under `fields`. Sub fields can change depending on your RapidPro instance.
 
----
-You don't need to put all fields. Only give fields you want to be exported in the dataset.
 
----
+> You don't need to put all fields. Just give fields you want to be exported in the dataset.
+
 
 ![config.yml file code](/docs/img/config_file.svg)
+
