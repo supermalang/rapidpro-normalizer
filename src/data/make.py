@@ -11,7 +11,6 @@ import export_data as exp
 import functions as fnc
 
 
-
 @click.command()
 @click.option('--requesttype', prompt='Give the type of request', type=str)
 @click.option('--fieldgroup', prompt='Give the name of the fieldgroup', type=str)
@@ -112,7 +111,8 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     # Root directory of the project
-    project_dir = Path(__file__).resolve().parents[2]
+    # project_dir = Path(__file__).resolve().parents[2]
+    project_dir = os.path.abspath(os.path.join(__file__, '../../'))
 
     # Load up the .env entries as environment variables
     load_dotenv(os.path.join(project_dir, '.env'))
