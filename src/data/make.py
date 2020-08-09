@@ -50,7 +50,7 @@ def main(requesttype=None, fieldgroup=None, datasetname=None):
             
     # In case there is an error in loading the settings an exception is raised
     except Exception as e:
-        logger.info('Error reading the config file: ' + str(e))
+        logger.error('Error reading the config file: ' + str(e))
         return
 
         
