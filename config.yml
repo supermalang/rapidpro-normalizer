@@ -1,0 +1,35 @@
+rapidpro_api_settings:
+    - request_types:
+        - getcontacts: "https://api.rapidpro.io/api/v2/contacts.json"
+        - getruns: "https://api.rapidpro.io/api/v2/runs.json"
+
+data_export_settings:
+    - export_to_file: 
+        - export: true
+        - path: "data/processed"
+        - fileType: "csv"       # The file type can be csv or json
+    # You can set up the DB connexion credentials in the .env file
+    - export_to_database: true
+
+
+contact_fields:
+    - name
+    - urns
+    - blocked
+    - created_on
+    - modified_on
+    - uuid
+    - fields:
+        - departement
+        - commune
+        - annee_en_cours
+        - mois_dernier_rapport
+        - mois_de_rapport
+        - reporting_month  
+        - date_rapport
+        - date_completude_du_rapport
+        - compteur_retard_rapport_agent_ec
+        - mois_de_rappel
+        - rappels_de_rapport
+        - date_rapport_de_rappel
+    
