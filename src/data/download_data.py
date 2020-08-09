@@ -47,7 +47,6 @@ def download_raw_data(requesturl, filename):
 
         # If there is no next page we stop the loop
         else:
-            print(requestsNumber)
             logger.info('Download complete')
             break
 

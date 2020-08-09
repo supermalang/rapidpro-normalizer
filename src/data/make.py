@@ -14,12 +14,47 @@ import functions as fnc
 
 @click.command()
 @click.option('--requesttype', prompt='Give the type of request', type=str)
+@click.option('--fieldgroup', prompt='Give the name of the fieldgroup', type=str)
 @click.option('--datasetname', prompt='Give a name for thedataset', type=str)
-def main(requesttype=None, datasetname=None):
-    """ Runs data processing scripts to turn raw data from (../../data/raw) into
-        cleaned data ready to be analyzed (saved in ../../data/processed).
-    """
+def main(requesttype=None, fieldgroup=None, datasetname=None):
+    """Download RapidPro API resources and export them in a normalized dataset
 
+    Args:
+        requesttype (str, optional): Type of the RapidPro request. Defaults to None.
+        fieldgroup (str, optional): Group of fields to normalize. Defaults to None.
+        datasetname (str, optional): Name of dataset to export. Defaults to None.
+    """
+    
+
+    # Load the config file settings
+    try:                           
+        with open(os.path.join(project_dir, 'config.yml'), 'r') as configfile:
+            config = yaml.safe_load(configfile)
+            fields = config[fieldgroup]
+
+            # Rapid Pro API Requests Types
+            rapidpro_api_settings = config['rapidpro_api_settings']
+            rapidpro_requests_types = fnc.search_dict_from_list("request_types", rapidpro_api_settings)
+            
+            # Load file export settings            
+            data_export_settings = config['data_export_settings']
+            file_export_settings = fnc.search_dict_from_list("export_to_file", data_export_settings)
+            file_export_is_enabled = fnc.search_dict_from_list("export", file_export_settings)
+            if file_export_is_enabled:
+                file_export_path = fnc.search_dict_from_list("path", file_export_settings)
+                file_export_format = fnc.search_dict_from_list("fileType", file_export_settings)
+
+            # Load the DB export setting
+            # For now only MySQL DB is supported
+            # The DB credentials are defined in the .env file
+            db_export_is_enabled = fnc.search_dict_from_list("export_to_database", data_export_settings)
+            
+    # In case there is an error in loading the settings an exception is raised
+    except Exception as e:
+        logger.info('Error reading the config file: ' + str(e))
+        return
+
+        
 
     requestUrl =  fnc.search_dict_from_list(requesttype, rapidpro_requests_types)
     if(requestUrl is None):
@@ -82,33 +117,4 @@ if __name__ == "__main__":
     # Load up the .env entries as environment variables
     load_dotenv(os.path.join(project_dir, '.env'))
 
-    # Load the config file settings
-    try:                           
-        with open(os.path.join(project_dir, 'config.yml'), 'r') as configfile:
-            config = yaml.safe_load(configfile)
-            fields = config['contact_fields']
-
-            # Rapid Pro API Requests Types
-            rapidpro_api_settings = config['rapidpro_api_settings']
-            rapidpro_requests_types = fnc.search_dict_from_list("request_types", rapidpro_api_settings)
-            
-            # Load file export settings            
-            data_export_settings = config['data_export_settings']
-            file_export_settings = fnc.search_dict_from_list("export_to_file", data_export_settings)
-            file_export_is_enabled = fnc.search_dict_from_list("export", file_export_settings)
-            if file_export_is_enabled:
-                file_export_path = fnc.search_dict_from_list("path", file_export_settings)
-                file_export_format = fnc.search_dict_from_list("fileType", file_export_settings)
-
-            # Load the DB export setting
-            # For now only MySQL DB is supported
-            # The DB credentials are defined in the .env file
-            db_export_is_enabled = fnc.search_dict_from_list("export_to_database", data_export_settings)
-            
-    # In case there is an error in loading the settings an exception is raised
-    except Exception as e:
-        logger.info('Error reading the config file: ' + str(e))
-
-
-    else:
-        main()
+    main()
