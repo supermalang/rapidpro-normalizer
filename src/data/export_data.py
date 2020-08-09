@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
-import urllib.parse
+import sys
 import logging
+
+try:
+    import urllib.parse as urlparse
+except:
+    from urlparse import urlparse
 
 
 def export_df_to_csv(output_path, dataframe):
@@ -42,6 +47,7 @@ def export_df_to_db(dataframe, db_table, db_credentials):
         db_table (str): The table in which the dataframe will be exported
         db_credentials (dict): The database credentials
     """
+
     
     # Logger Configuration
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -56,7 +62,7 @@ def export_df_to_db(dataframe, db_table, db_credentials):
     # Start index at 1
     dataframe.index = np.arange( 1, len(dataframe) + 1)
 
-    db_password = urllib.parse.quote_plus(db_credentials.get('DB_PASSWORD'))
+    db_password = urlparse.quote_plus(db_credentials.get('DB_PASSWORD'))
 
     # Build DB URL and connection
     database_url =  'mysql+pymysql://{0}:{1}@{2}/{3}?charset=utf8mb4'.\
