@@ -91,7 +91,10 @@ target/
 /notebooks/*
 
 # exclude data from source control by default
-/data/
+/data/external/*
+/data/interim/*
+/data/processed/*
+/data/raw/*
 
 /references/
 

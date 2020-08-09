@@ -7,7 +7,7 @@
 RapidPro Normalizer
 ==============================
 
-RapidPro Normalizer is a command line utility to flatten RapidPro API Responses in order to export them
+RapidPro Normalizer is a command line utility to flatten records of RapidPro API Responses in order to export them as files or database records.
 
 # Features
 - Interactive command line interface
@@ -53,15 +53,32 @@ $ mv sample.config.yml config.yml
 2. Define the file export settings. The `path` must in the directory of the utility
 3. Enable or disable the export to database
 4. Give the field group to use to fetch columns that need to be exported. Here `Contact_fields` is the field group, but you can customize. Make sure it does not contain spaces, numbers or special characters. The field group will be refered in the command line as `fieldgroup`.  
-5. Give your fields. The RapidPro field hierarchy from the API Response must be conserved. Top level fields are `name, urns, blocked, created_on, modified_on, uuid, fields`. Sub fields are under `fields`. Sub fields can change depending on your RapidPro instance.
+5. Give your fields. The RapidPro field hierarchy from the API Response must be conserved.  
+First you can use API clients like [Postman](https://www.postman.com/) to send a request and look into the response to see what the fields hierarchy looks like. You will need to consider only fields that are in the `results` property.
 
 
 > You don't need to put all fields. Just give fields you want to be exported in the dataset.  
 
-> You can use many field groups in your config file but you can only use `fieldroup` in the command line execution.
+> You can add many field groups in your config file but only one `fielgroup` can be used at at time in the command line.
 
 
 ![config.yml file code](/docs/img/config_file.svg)
+
+## Customize the config file requests types
+> *This part is optional*  
+
+You can customize the values of the requests types `getcontacts, getruns and getmessages` directly in the `config.yml` file to add requests parameters as necessary.
+
+Example: If you are only interested in runs that belong to a given flow you can customize the request type as following:
+
+```yml
+# Types of api calls you can use
+rapidpro_api_settings:
+    - request_types:
+        - getruns: "https://api.rapidpro.io/api/v2/runs.json?flow=f5901b62-ba76-4003-9c62-72fdacc1b7b7"
+
+```
+
 
 ## Update the database
 > *You can ignore this part if you do not export to database*
