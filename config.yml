@@ -1,8 +1,11 @@
+# Types of api calls you can use
 rapidpro_api_settings:
     - request_types:
         - getcontacts: "https://api.rapidpro.io/api/v2/contacts.json"
         - getruns: "https://api.rapidpro.io/api/v2/runs.json"
+        - getmessages: "http://example.com/api/v2/messages.json"
 
+# Data export settings
 data_export_settings:
     - export_to_file: 
         - export: true
@@ -12,6 +15,7 @@ data_export_settings:
     - export_to_database: true
 
 
+# Group of fields and sub-fields to normalize
 contact_fields:
     - name
     - urns
@@ -32,4 +36,3 @@ contact_fields:
         - mois_de_rappel
         - rappels_de_rapport
         - date_rapport_de_rappel
-    
