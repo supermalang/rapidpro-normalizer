@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     # Root directory of the project
     # project_dir = Path(__file__).resolve().parents[2]
-    project_dir = os.path.abspath(os.path.join(__file__, '../../'))
+    project_dir = os.path.abspath(os.path.join(__file__, '../../..'))
 
     # Load up the .env entries as environment variables
     load_dotenv(os.path.join(project_dir, '.env'))
