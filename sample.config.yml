@@ -14,14 +14,26 @@ data_export_settings:
     # You can set up the DB connexion credentials in the .env file
     - export_to_database: true
 
+# fieldgroup
+covid_education_poll_columns:
+    - id
+    - exit_type
+    - contact:
+        - uuid
+        - name
+    - values:
+        - is_going_to_school:
+            - value
+        - is_learning_online:
+            - value
 
-# Group of fields and sub-fields to normalize
-contact_fields:
+# fieldgroup
+health_agents:
+    - uuid
     - name
     - blocked
     - created_on
     - modified_on
-    - uuid
     - fields:
         - field1
         - field2

@@ -22,7 +22,7 @@ The easiest way to install this utility is to clone it from GitHub:
 $ git clone https://github.com/supermalang/rapidpro-normalizer.git
 ```
 
-Navigate to the directory and install the requirements
+Navigate to the directory and install the python requirements
 ```bash
 $ cd rapidpro-normalizer
 $ pip install -r requirements.txt
@@ -47,12 +47,12 @@ Now open the `.env` file and configure it by putting the good values for `RAPIDP
 Create the `config.yml` file and update the content.  
 1. Create the config file:
 ```bash
-$ mv sample.config.yml config.yml
+$ cp sample.config.yml config.yml
 ```
 
 2. Define the file export settings. The `path` must in the directory of the utility
 3. Enable or disable the export to database
-4. Give the field group to use to fetch columns that need to be exported. Here `Contact_fields` is the field group, but you can customize. Make sure it does not contain spaces, numbers or special characters. The field group will be refered in the command line as `fieldgroup`.  
+4. Give the field group to use to fetch columns that need to be exported. Here `covid_edu_poll` is the field group, but you can customize. Make sure it does not contain spaces, numbers or special characters. The field group will be refered in the command line as `fieldgroup`.  
 5. Give your fields. The RapidPro field hierarchy from the API Response must be conserved.  
 First you can use API clients like [Postman](https://www.postman.com/) to send a request and look into the response to see what the fields hierarchy looks like. You will need to consider only fields that are in the `results` property.
 
@@ -62,7 +62,7 @@ First you can use API clients like [Postman](https://www.postman.com/) to send a
 > You can add many field groups in your config file but only one `fielgroup` can be used at at time in the command line.
 
 
-![config.yml file code](/docs/img/config_file.svg)
+![config.yml file code](/docs/img/config_file.png)
 
 ## Customize the config file requests types
 > *This part is optional*  
@@ -83,6 +83,8 @@ rapidpro_api_settings:
 ## Update the database
 > *You can ignore this part if you do not export to database*
 
+⚠️ *Make sure your `databaseuser` has at least the `ALTER` privilege on the database.*
+
 Update the database to use `utf8mb4` as the default character set.
 
 ```sql
@@ -90,7 +92,6 @@ ALTER SCHEMA `databasename`  DEFAULT CHARACTER SET utf8mb4 ;
 ```
 Change `databasename` by the name of your database.
 
-⚠️ *Make sure your `databaseuser` has at least the `ALTER` privilege on the database.*
 
 
 # Usage
@@ -100,7 +101,7 @@ The syntax to use the RapidPro Normalizer is:
 $ python src/data/make.py [OPTIONS]
 ```
 
-You have the following options:
+You can use the following options:
 - `requesttype`: type of the RapidPro request. The `requesttype` needs to be defined in the config file
 - `fieldgroup`: Group of fields to export. The `fieldgroup` needs to be defined in the config file.
 - `datasetname`: name of the dataset to export.
@@ -117,7 +118,7 @@ $ python src/data/make.py --requesttype getcontacts --fieldgroup contact_fields 
 # Schedule automatic execution
 > *This part is optional*  
 
-You can schedule automatic execution of the utility by creating a cron task. Follow these steps,
+You can schedule the automatic execution of the utility by creating a cron task. Follow these steps:
 
 1. Display and copy the command to be executed by the cron task  
 ⚠️ *Make sure you are still in the rapidpro-normalization directory*
@@ -129,7 +130,7 @@ $ echo "python $(pwd)/src/data/make.py --requesttype getcontacts --fieldgroup co
 python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
 ```
 2. Edit the `crontab` file
-> *The `crontab` file contains instructions for the cron daemon in the following simplified manner: "**run this command at this time on this date**".*
+> *The `crontab` file contains instructions for the cron daemon in the following simplified manner: "**run this command on this date at this time**".*
 
 ```bash
 $ crontab -e
@@ -139,4 +140,4 @@ Add at the end of the file the command you have copied from the previous step in
 ```
 0 1 * * * python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
 ```
-This gives instruction to the cron daemon to run the `python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts` command every day of week, every month, every day of month at 1:00 AM. 
+This gives instruction to the cron daemon to run the command `python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts` every day at 1:00 AM. 
