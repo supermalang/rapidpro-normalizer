@@ -91,12 +91,18 @@ target/
 /notebooks/*
 
 # exclude data from source control by default
+
 /data/external/*
 /data/interim/*
 /data/processed/*
 /data/raw/*
+!/data/external/.gitkeep
+!/data/interim/.gitkeep
+!/data/processed/.gitkeep
+!/data/raw/.gitkeep
 
-/references/
+/references/*
+!/references/.gitkeep
 
 /reports/
 
