@@ -10,4 +10,4 @@ pandas
 sqlalchemy
 #Sphinx
 #awscli
-flake8
+#flake8

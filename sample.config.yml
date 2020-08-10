@@ -15,7 +15,7 @@ data_export_settings:
     - export_to_database: true
 
 # fieldgroup
-covid_education_poll_columns:
+covid_edu_poll:
     - id
     - exit_type
     - contact:
