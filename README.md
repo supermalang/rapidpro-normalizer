@@ -122,13 +122,17 @@ You can schedule the automatic execution of the utility by creating a cron task.
 
 1. Display and copy the command to be executed by the cron task  
 ⚠️ *Make sure you are still in the rapidpro-normalization directory*
+
+Run the following to copy the command to give to the cron task. You will need to update the parameters accordingly.
+
 ```bash
 $ echo "python $(pwd)/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts"
 ```
 
-```
-python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
-```
+You will have a result like:
+![Command To Schedule](/docs/img/CommandToSchedule.png)
+
+
 2. Edit the `crontab` file
 > *The `crontab` file contains instructions for the cron daemon in the following simplified manner: "**run this command on this date at this time**".*
 
