@@ -8,6 +8,7 @@ python-dotenv>=0.5.1
 pathlib
 pandas
 sqlalchemy
+pymysql
 #Sphinx
 #awscli
 #flake8

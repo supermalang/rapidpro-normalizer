@@ -16,6 +16,11 @@ RapidPro Normalizer is a command line utility to flatten records of RapidPro API
 - Works on Linux and (maybe) Windows
 
 # Installation
+## Prerequisites
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [Python3](https://www.python.org/downloads/)
+- [Pip3](https://www.educative.io/edpresso/installing-pip3-in-ubuntu)
+
 ## The easy way
 The easiest way to install this utility is to clone it from GitHub:
 ```bash
@@ -25,7 +30,7 @@ $ git clone https://github.com/supermalang/rapidpro-normalizer.git
 Navigate to the directory and install the python requirements
 ```bash
 $ cd rapidpro-normalizer
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ``` 
 
 # Configuration
@@ -72,7 +77,8 @@ You can customize the values of the requests types `getcontacts, getruns and get
 Example: If you are only interested in runs that belong to a given flow you can customize the request type as following:
 
 ```yml
-# Types of api calls you can use
+# Types of api requests you can use
+# You can customize the requests by adding parameters that comply with the RapidPro API
 rapidpro_api_settings:
     - request_types:
         - getruns: "https://api.rapidpro.io/api/v2/runs.json?flow=f5901b62-ba76-4003-9c62-72fdacc1b7b7"
@@ -98,7 +104,7 @@ Change `databasename` by the name of your database.
 #### Command line
 The syntax to use the RapidPro Normalizer is:
 ```bash
-$ python src/data/make.py [OPTIONS]
+$ python3 src/data/make.py [OPTIONS]
 ```
 
 You can use the following options:
@@ -112,7 +118,7 @@ You can use the following options:
 
 **Inline execution**
 ```bash
-$ python src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
+$ python3 src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
 ```
 
 # Schedule automatic execution
@@ -126,7 +132,7 @@ You can schedule the automatic execution of the utility by creating a cron task.
 Run the following to copy the command to give to the cron task. You will need to update the parameters accordingly.
 
 ```bash
-$ echo "python $(pwd)/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts"
+$ echo "python3 $(pwd)/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts"
 ```
 
 You will have a result like:
@@ -142,6 +148,6 @@ $ crontab -e
 
 Add at the end of the file the command you have copied from the previous step in this way and save and close the file:
 ```
-0 1 * * * python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
+0 1 * * * python3 /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts
 ```
-This gives instruction to the cron daemon to run the command `python /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts` every day at 1:00 AM. 
+This gives instruction to the cron daemon to run the command `python3 /home/user/path/to/rapidpro-mormalizer/src/data/make.py --requesttype getcontacts --fieldgroup contact_fields --datasetname mycontacts` every day at 1:00 AM. 

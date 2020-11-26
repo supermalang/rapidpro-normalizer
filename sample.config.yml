@@ -1,9 +1,13 @@
-# Types of api calls you can use
+# Types of api requests you can use
+# You can customize the requests by adding parameters that comply with the RapidPro API
 rapidpro_api_settings:
     - request_types:
         - getcontacts: "https://api.rapidpro.io/api/v2/contacts.json"
         - getruns: "https://api.rapidpro.io/api/v2/runs.json"
-        - getmessages: "http://example.com/api/v2/messages.json"
+        - getmessages: "https://api.rapidpro.io/api/v2/messages.json"
+        - getcampaigns: "https://api.rapidpro.io/api/v2/campaigns.json"
+        - getarchives: "https://api.rapidpro.io/api/v2/archives.json"
+
 
 # Data export settings
 data_export_settings:
@@ -11,8 +15,12 @@ data_export_settings:
         - export: true
         - path: "data/processed"
         - fileType: "csv"       # The file type can be csv or json
-    # You can set up the DB connexion credentials in the .env file
+
+    # Set up the DB connexion credentials in the .env file
     - export_to_database: true
+
+
+# The field groups define the data fields you want to export from the API response.
 
 # fieldgroup
 covid_edu_poll:
