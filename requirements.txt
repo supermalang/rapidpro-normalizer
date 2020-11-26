@@ -9,6 +9,8 @@ pathlib
 pandas
 sqlalchemy
 pymysql
+pyyaml
+requests
 #Sphinx
 #awscli
 #flake8

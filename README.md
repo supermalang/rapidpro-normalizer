@@ -13,7 +13,7 @@ RapidPro Normalizer is a command line utility to flatten records of RapidPro API
 - Interactive command line interface
 - Easy Yaml configuration
 - Export dataset to file and database
-- Works on Linux and (maybe) Windows
+- Works on Linux and Windows (may be on Mac as well)
 
 # Installation
 ## Prerequisites
@@ -107,6 +107,8 @@ The syntax to use the RapidPro Normalizer is:
 $ python3 src/data/make.py [OPTIONS]
 ```
 
+> ⚠️ *Depending on your environment you might need to use `python` (with version 3) instead of `python3`*
+
 You can use the following options:
 - `requesttype`: type of the RapidPro request. The `requesttype` needs to be defined in the config file
 - `fieldgroup`: Group of fields to export. The `fieldgroup` needs to be defined in the config file.
@@ -124,7 +126,7 @@ $ python3 src/data/make.py --requesttype getcontacts --fieldgroup contact_fields
 # Schedule automatic execution
 > *This part is optional*  
 
-You can schedule the automatic execution of the utility by creating a cron task. Follow these steps:
+You can schedule the automatic execution of the utility by creating a cron task on a Linux machine or using the [Task scheduler](https://www.windowscentral.com/how-create-automated-task-using-task-scheduler-windows-10) on Windows. Follow these steps, if you are using Linux:
 
 1. Display and copy the command to be executed by the cron task  
 ⚠️ *Make sure you are still in the rapidpro-normalization directory*
