@@ -73,7 +73,7 @@ def export_df_to_db(dataframe, db_table, db_credentials):
     logger.info("Starting export to database")
 
     try:
-        engine = create_engine(database_url, encoding="utf8")
+        engine = create_engine(database_url)
 
         with engine.connect() as dbConnection:
             # Store the dataframe into the stagging table
@@ -91,7 +91,7 @@ def export_df_to_db(dataframe, db_table, db_credentials):
                     # The REPLACE statement used here works with MySQL
                     # The REPLACE statement inserts a new row in the table or overwrites existing(conflicting) rows
                     update_query = "REPLACE INTO {0} SELECT * FROM {1}".format(db_table, stagging_table)
-                    engine.execute(update_query)
+                    dbConnection.execute(update_query)
 
                 except Exception as e:
                     # If the table does not exist, we create a new empty table and try to update again
@@ -104,10 +104,10 @@ def export_df_to_db(dataframe, db_table, db_credentials):
                             
                             # Add primary key to the table
                             add_pk_query = "ALTER TABLE `{0}` ADD PRIMARY KEY (`index`)".format(db_table)
-                            engine.execute(add_pk_query)
+                            dbConnection.execute(add_pk_query)
 
                             # Update the table with the stagging data
-                            engine.execute(update_query)
+                            dbConnection.execute(update_query)
 
                         except Exception as e:
                             logMsg = "Cannot export to the {0} table : \n".format(db_table) + str(e)
@@ -118,7 +118,6 @@ def export_df_to_db(dataframe, db_table, db_credentials):
 
                     else:
                         logMsg = "Cannot export to the {0} table : \n".format(db_table) + str(e)
-                        logger.error(logMsg)
 
                 # If the export table is successfully updated
                 else:
